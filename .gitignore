@@ -1,0 +1,8 @@
+config/config.php
+var/*
+!var/.gitkeep
+node_modules/
+.env
+docs/screenshots/
+tests/integration-result.json
+tests/browser-result.json

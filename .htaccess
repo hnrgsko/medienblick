@@ -1,0 +1,3 @@
+# Git checkout must not be the document root. In Plesk set Document Root to /public.
+Options -Indexes
+Require all denied
