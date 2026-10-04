@@ -35,7 +35,16 @@ try {
     if(function_exists('db')) {try{if(db()->inTransaction())db()->rollBack();}catch(Throwable){}}
     $http=$e instanceof ApiError?$e->http:500;
     http_response_code($http);
-    // Never log request bodies, Authorization headers, database exception parameters or tokens.
-    if($http===500)error_log('Handy-Experiment: internal error (details intentionally withheld).');
+    // Only diagnostic categories/codes: never exception messages, SQL, credentials,
+    // request bodies, headers, tokens or stack traces (which may contain arguments).
+    if($http===500) {
+        $type = $e instanceof PDOException ? 'PDOException' :
+            ($e instanceof ParseError ? 'ParseError' :
+            ($e instanceof TypeError ? 'TypeError' : ($e instanceof Error ? 'Error' : 'Exception')));
+        $code = preg_replace('/[^A-Za-z0-9_-]/', '', substr((string)$e->getCode(), 0, 16));
+        $driver = $e instanceof PDOException && isset($e->errorInfo[1]) ? (int)$e->errorInfo[1] : 0;
+        error_log(sprintf('Medienblick: internal error; type=%s; code=%s; driver=%d; source=%s:%d',
+            $type, $code, $driver, basename($e->getFile()), $e->getLine()));
+    }
     echo json_encode(['error'=>$e instanceof ApiError?$e->getMessage():'Die Anfrage konnte nicht verarbeitet werden. Bitte erneut versuchen.'],JSON_UNESCAPED_UNICODE);
 }
