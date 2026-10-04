@@ -13,7 +13,7 @@ CREATE TABLE jim_reference (
  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  dataset_id BIGINT UNSIGNED NOT NULL,
  study_year SMALLINT UNSIGNED NOT NULL,
- age_group ENUM('12-13','14-15','16-17','18-19') NOT NULL,
+ age_group ENUM('12-13','14-15','16-17','18-19','12-19') NOT NULL,
  metric_type ENUM('item_distribution','item_agreement','screen_mean','app_percentage') NOT NULL,
  item_id VARCHAR(80) NOT NULL,
  response_value TINYINT UNSIGNED NOT NULL DEFAULT 0,

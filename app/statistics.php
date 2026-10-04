@@ -54,6 +54,19 @@ function aggregate(array $c): array {
 }
 function references(array $c): array {
     $dataset=query('SELECT study_year,source_version,source,population,verified FROM jim_datasets WHERE id=?',[$c['jim_dataset_id']])->fetch();
-    $rows=query('SELECT metric_type,item_id,response_value,percentage,numeric_value,source,source_version FROM jim_reference WHERE dataset_id=? AND age_group=?',[$c['jim_dataset_id'],$c['jim_age_group']])->fetchAll();
-    return ['dataset'=>$dataset,'age_group'=>$c['jim_age_group'],'values'=>$dataset['verified']?$rows:[]];
+    $values=[]; $context=null;
+    if($dataset && $dataset['verified']) {
+        $rows=query("SELECT age_group,metric_type,item_id,response_value,percentage,numeric_value,source,source_version FROM jim_reference WHERE dataset_id=? AND age_group IN (?, '12-19')",[$c['jim_dataset_id'],$c['jim_age_group']])->fetchAll();
+        // Prefer the selected age for a whole metric, never blend its distribution with overall values.
+        $specific=[];
+        foreach($rows as $r) if($r['age_group']===$c['jim_age_group']) $specific[$r['item_id']]=true;
+        foreach($rows as $r) if($r['age_group']===$c['jim_age_group'] || !isset($specific[$r['item_id']])) $values[]=$r;
+        // Only a reviewed, version-pinned supplement; never an arbitrary database path.
+        $catalog=['jim-2025-jimplus-2026-v1'=>'jim-2025-jimplus-2026-v1.json'];
+        if(isset($catalog[$dataset['source_version']])) {
+            $bundle=json_decode(file_get_contents(dirname(__DIR__).'/data/references/'.$catalog[$dataset['source_version']]),true,32,JSON_THROW_ON_ERROR);
+            $context=$bundle['context_study'];
+        }
+    }
+    return ['dataset'=>$dataset,'age_group'=>$c['jim_age_group'],'values'=>$values,'context_study'=>$context];
 }

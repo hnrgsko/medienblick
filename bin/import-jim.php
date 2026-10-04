@@ -14,7 +14,8 @@ try {
  $values=$d['values']??null;if(!is_array($values)||!count($values))throw new RuntimeException('Keine Werte.');
  $groups=[];$seen=[];
  foreach($values as $r){
-  if(!in_array($r['age_group']??'', ['12-13','14-15','16-17','18-19'],true))throw new RuntimeException('Alter fehlt.');
+  if(!in_array($r['age_group']??'', ['12-13','14-15','16-17','18-19','12-19'],true))throw new RuntimeException('Alter fehlt.');
+  if(isset($r['source'])&&(!filter_var($r['source'],FILTER_VALIDATE_URL)||parse_url($r['source'],PHP_URL_SCHEME)!=='https'||!in_array(parse_url($r['source'],PHP_URL_HOST),['mpfs.de','www.mpfs.de'],true)))throw new RuntimeException('Ungültige Fundstelle.');
   $type=$r['metric_type']??'';$item=shortText($r['item_id']??'',80,'Metrik');$rv=$r['response_value']??0;
   if(!in_array($type,['item_distribution','item_agreement','screen_mean','app_percentage'],true))throw new RuntimeException('Unbekannte Metrik.');
   if(!is_int($rv)||($type==='item_distribution'?($rv<1||$rv>4):$rv!==0))throw new RuntimeException('Antwortwert ungültig.');
@@ -28,6 +29,6 @@ try {
  foreach($groups as $g)if(count($g)!==4||abs(array_sum($g)-100)>1.1)throw new RuntimeException('Viererverteilung muss vollständig sein und gerundet etwa 100 Prozent ergeben.');
  db()->beginTransaction();
  query('INSERT INTO jim_datasets(study_year,source_version,source,population,verified) VALUES (?,?,?,?,1)',[$year,$version,$source,$population]);$id=(int)db()->lastInsertId();
- foreach($values as $r)query('INSERT INTO jim_reference(dataset_id,study_year,age_group,metric_type,item_id,response_value,percentage,numeric_value,source,source_version) VALUES (?,?,?,?,?,?,?,?,?,?)',[$id,$year,$r['age_group'],$r['metric_type'],$r['item_id'],$r['response_value']??0,$r['metric_type']==='screen_mean'?null:$r['percentage'],$r['metric_type']==='screen_mean'?$r['numeric_value']:null,$source,$version]);
+ foreach($values as $r)query('INSERT INTO jim_reference(dataset_id,study_year,age_group,metric_type,item_id,response_value,percentage,numeric_value,source,source_version) VALUES (?,?,?,?,?,?,?,?,?,?)',[$id,$year,$r['age_group'],$r['metric_type'],$r['item_id'],$r['response_value']??0,$r['metric_type']==='screen_mean'?null:$r['percentage'],$r['metric_type']==='screen_mean'?$r['numeric_value']:null,$r['source']??$source,$version]);
  db()->commit();echo "Neue Referenzversion importiert. Bestehende Klassen behalten ihre bisherige Version.\n";
 }catch(Throwable $e){try{if(db()->inTransaction())db()->rollBack();}catch(Throwable){}fwrite(STDERR,"Kein Import: ".$e->getMessage()."\n");exit(1);}

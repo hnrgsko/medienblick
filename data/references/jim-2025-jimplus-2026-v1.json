@@ -1,0 +1,288 @@
+{
+  "study_year": 2025,
+  "source_version": "jim-2025-jimplus-2026-v1",
+  "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf",
+  "population": "JIM 2025: Deutschland, 12–19 Jahre, n=1.200, 02.06.–12.07.2025, CATI/CAWI. Sieben Aussagen: Gesamtgruppe, Zustimmung voll und ganz/weitgehend, S. 30. Bildschirmzeit: eigenes Smartphone und ablesbare Gerätezeit, n=960, S. 25. Wichtigste Apps: eigenes Smartphone, n=1.135, bis zu drei offene Nennungen, Top 5 je Altersgruppe, S. 28. Teilgruppen haben kleinere Fallzahlen.",
+  "values": [
+    {
+      "age_group": "12-19",
+      "metric_type": "item_agreement",
+      "item_id": "jim_01",
+      "response_value": 0,
+      "percentage": 68,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=32"
+    },
+    {
+      "age_group": "12-19",
+      "metric_type": "item_agreement",
+      "item_id": "jim_02",
+      "response_value": 0,
+      "percentage": 67,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=32"
+    },
+    {
+      "age_group": "12-19",
+      "metric_type": "item_agreement",
+      "item_id": "jim_03",
+      "response_value": 0,
+      "percentage": 39,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=32"
+    },
+    {
+      "age_group": "12-19",
+      "metric_type": "item_agreement",
+      "item_id": "jim_04",
+      "response_value": 0,
+      "percentage": 33,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=32"
+    },
+    {
+      "age_group": "12-19",
+      "metric_type": "item_agreement",
+      "item_id": "jim_05",
+      "response_value": 0,
+      "percentage": 36,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=32"
+    },
+    {
+      "age_group": "12-19",
+      "metric_type": "item_agreement",
+      "item_id": "jim_06",
+      "response_value": 0,
+      "percentage": 21,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=32"
+    },
+    {
+      "age_group": "12-19",
+      "metric_type": "item_agreement",
+      "item_id": "jim_07",
+      "response_value": 0,
+      "percentage": 29,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=32"
+    },
+    {
+      "age_group": "12-13",
+      "metric_type": "screen_mean",
+      "item_id": "smartphone_minutes",
+      "response_value": 0,
+      "numeric_value": 166,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=27"
+    },
+    {
+      "age_group": "12-13",
+      "metric_type": "app_percentage",
+      "item_id": "WhatsApp",
+      "response_value": 0,
+      "percentage": 82,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "12-13",
+      "metric_type": "app_percentage",
+      "item_id": "YouTube",
+      "response_value": 0,
+      "percentage": 30,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "12-13",
+      "metric_type": "app_percentage",
+      "item_id": "Snapchat",
+      "response_value": 0,
+      "percentage": 18,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "12-13",
+      "metric_type": "app_percentage",
+      "item_id": "TikTok",
+      "response_value": 0,
+      "percentage": 16,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "12-13",
+      "metric_type": "app_percentage",
+      "item_id": "Instagram",
+      "response_value": 0,
+      "percentage": 10,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "14-15",
+      "metric_type": "screen_mean",
+      "item_id": "smartphone_minutes",
+      "response_value": 0,
+      "numeric_value": 217,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=27"
+    },
+    {
+      "age_group": "14-15",
+      "metric_type": "app_percentage",
+      "item_id": "WhatsApp",
+      "response_value": 0,
+      "percentage": 81,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "14-15",
+      "metric_type": "app_percentage",
+      "item_id": "Snapchat",
+      "response_value": 0,
+      "percentage": 30,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "14-15",
+      "metric_type": "app_percentage",
+      "item_id": "Instagram",
+      "response_value": 0,
+      "percentage": 30,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "14-15",
+      "metric_type": "app_percentage",
+      "item_id": "TikTok",
+      "response_value": 0,
+      "percentage": 27,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "14-15",
+      "metric_type": "app_percentage",
+      "item_id": "YouTube",
+      "response_value": 0,
+      "percentage": 22,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "16-17",
+      "metric_type": "screen_mean",
+      "item_id": "smartphone_minutes",
+      "response_value": 0,
+      "numeric_value": 249,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=27"
+    },
+    {
+      "age_group": "16-17",
+      "metric_type": "app_percentage",
+      "item_id": "WhatsApp",
+      "response_value": 0,
+      "percentage": 86,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "16-17",
+      "metric_type": "app_percentage",
+      "item_id": "Instagram",
+      "response_value": 0,
+      "percentage": 45,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "16-17",
+      "metric_type": "app_percentage",
+      "item_id": "Snapchat",
+      "response_value": 0,
+      "percentage": 29,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "16-17",
+      "metric_type": "app_percentage",
+      "item_id": "TikTok",
+      "response_value": 0,
+      "percentage": 27,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "16-17",
+      "metric_type": "app_percentage",
+      "item_id": "YouTube",
+      "response_value": 0,
+      "percentage": 15,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "18-19",
+      "metric_type": "screen_mean",
+      "item_id": "smartphone_minutes",
+      "response_value": 0,
+      "numeric_value": 278,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=27"
+    },
+    {
+      "age_group": "18-19",
+      "metric_type": "app_percentage",
+      "item_id": "WhatsApp",
+      "response_value": 0,
+      "percentage": 87,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "18-19",
+      "metric_type": "app_percentage",
+      "item_id": "Instagram",
+      "response_value": 0,
+      "percentage": 47,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "18-19",
+      "metric_type": "app_percentage",
+      "item_id": "TikTok",
+      "response_value": 0,
+      "percentage": 19,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "18-19",
+      "metric_type": "app_percentage",
+      "item_id": "Snapchat",
+      "response_value": 0,
+      "percentage": 18,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    },
+    {
+      "age_group": "18-19",
+      "metric_type": "app_percentage",
+      "item_id": "Spotify",
+      "response_value": 0,
+      "percentage": 15,
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=30"
+    }
+  ],
+  "context_study": {
+    "title": "JIMplus 2026 · Digitales Wohlbefinden",
+    "age_group": "14–17",
+    "population": "Onlinebefragung von 800 Jugendlichen in Deutschland, 13.–27. Mai 2026. Zustimmung voll und ganz/weitgehend. Zusammenfassungen der Aussagen; eigene Fragen, keine direkten Vergleichswerte zu euren sieben Abschlussitems.",
+    "source": "https://mpfs.de/app/uploads/2026/07/JIMplus-2026_PDF.pdf",
+    "cards": [
+      {
+        "percentage": 82,
+        "text": "Neue Wissenszugänge durch Social Media",
+        "page": 22,
+        "prompt": "Welchen hilfreichen Inhalt habt ihr zuletzt entdeckt?"
+      },
+      {
+        "percentage": 68,
+        "text": "Social Media als Ablenkung von Belastungen",
+        "page": 20,
+        "prompt": "Wann hilft euch eine digitale Pause vom Alltag?"
+      },
+      {
+        "percentage": 72,
+        "text": "Aufgaben geraten durch Social Media in den Hintergrund",
+        "page": 20,
+        "prompt": "Was hilft euch, bei einer Aufgabe zu bleiben?"
+      },
+      {
+        "percentage": 55,
+        "text": "Weniger Freiraum für Erholung und Freizeit durch Social Media",
+        "page": 20,
+        "prompt": "Wie schafft ihr Platz für das, was euch wichtig ist?"
+      }
+    ]
+  }
+}
