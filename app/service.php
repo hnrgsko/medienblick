@@ -31,7 +31,7 @@ function normalizedAnswers(array $d,bool $final,int $weekCount=6): array {
 function dispatch(string $route,array $d): array {
     switch($route) {
     case 'bootstrap':
-        return ['home_insights'=>json_decode(file_get_contents(dirname(__DIR__).'/data/references/home-studies-2026-10-04-v2.json'),true,32,JSON_THROW_ON_ERROR),'csrf'=>$_SESSION['csrf'],'flexible_weeks'=>flexibleWeeks(),'max_weeks'=>flexibleWeeks()?52:6,'items'=>require __DIR__.'/items.php','base_url'=>config()['base_url'],
+        return ['home_insights'=>json_decode(file_get_contents(dirname(__DIR__).'/data/references/home-studies-2026-10-04-v3.json'),true,32,JSON_THROW_ON_ERROR),'csrf'=>$_SESSION['csrf'],'flexible_weeks'=>flexibleWeeks(),'max_weeks'=>flexibleWeeks()?52:6,'items'=>require __DIR__.'/items.php','base_url'=>config()['base_url'],
             'contact_email'=>config()['contact_email'],'legal_notice'=>config()['legal_notice'],
             'apps'=>query('SELECT DISTINCT canonical_name FROM app_aliases ORDER BY canonical_name')->fetchAll(PDO::FETCH_COLUMN)];
     case 'classes':

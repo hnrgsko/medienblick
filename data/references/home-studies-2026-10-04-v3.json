@@ -1,0 +1,62 @@
+{
+  "version": "home-studies-2026-10-04-v3",
+  "quote": {
+    "text": "Ein genauer Blick auf die Mediensituation im Detail kann zumindest die Diskussion versachlichen.",
+    "attribution": "mpfs · JIM-Studie 2025, Einleitung, S. 2",
+    "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=4"
+  },
+  "charts": [
+    {
+      "study": "JIM 2025",
+      "title": "Musik, Videos und Spiele.",
+      "intro": "So vielfältig ist die regelmäßige Mediennutzung:",
+      "kind": "bars",
+      "values": [
+        {
+          "label": "Musik hören",
+          "value": 93
+        },
+        {
+          "label": "Videos im Internet ansehen",
+          "value": 83
+        },
+        {
+          "label": "Digitale Spiele spielen",
+          "value": 71
+        },
+        {
+          "label": "Videostreaming-Dienste nutzen",
+          "value": 71
+        }
+      ],
+      "basis": "12–19 Jahre · n = 1.200 · Deutschland · Befragung Juni–Juli 2025",
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=16",
+      "source_label": "Originaldiagramm · JIM 2025, S. 14",
+      "note": "Täglich oder mehrmals pro Woche. Auswahl aus der Studie; mehrere Aktivitäten pro Person möglich. Die Werte zeigen Nutzungshäufigkeit, nicht Nutzungsdauer."
+    },
+    {
+      "study": "JIM 2025",
+      "title": "Auch das gehört zum Medienalltag.",
+      "intro": "Mediennutzung reicht über den Smartphone-Bildschirm hinaus:",
+      "kind": "dots",
+      "values": [
+        {
+          "label": "Radio hören – unabhängig vom Empfangsweg",
+          "value": 51
+        },
+        {
+          "label": "Gedruckte Bücher lesen",
+          "value": 35
+        },
+        {
+          "label": "Podcasts hören",
+          "value": 26
+        }
+      ],
+      "basis": "12–19 Jahre · n = 1.200 · Deutschland · Befragung Juni–Juli 2025",
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=16",
+      "source_label": "Originaldiagramm · JIM 2025, S. 14",
+      "note": "Täglich oder mehrmals pro Woche. Auswahl aus der Studie; mehrere Aktivitäten pro Person möglich. Die Werte zeigen Nutzungshäufigkeit, nicht Nutzungsdauer."
+    }
+  ]
+}
