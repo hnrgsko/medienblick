@@ -73,3 +73,11 @@ Nur `submitted`. Zustimmung = Werte 3 und 4. Vierer-Verteilung bleibt erhalten. 
 JIM-Version wird bei Klassenerstellung festgeschrieben. Keine stillen Jahrgangswechsel. Der Import verlangt Quelle, Erhebungsbasis und Versions-ID; identische Versionen werden nie überschrieben. Fehlende Alterswerte und fehlende vollständige Viererverteilungen bleiben fehlend. Keine Kombination von Onlinezeit und Smartphone-Bildschirmzeit. Original-Items nach Nutzerauftrag, gegengeprüft am offiziellen mpfs-Mediencheck (https://mpfs.de/mediencheck/, 03.10.2026). In dieser Lieferung keine unbestätigten numerischen Alterswerte.
 
 Projektpool ist Phase 2: separates SQL-Schema, eigene Redaktion und Berechtigungen. Die MVP-Infoseite enthält einen gemeinsamen Projektauftrag und gekennzeichnete Ideen; keine Schülerwahl, keine erfundene Freigabe. Erst VERÖFFENTLICHT wäre später öffentlich sichtbar.
+
+## Erweiterung: variable Beobachtungsdauer
+
+Die ursprüngliche Sechs-Wochen-Vorgabe ist seit Migration 002 ein Standardwert. Maßgeblich ist die Zahl der `class_weeks` (1–52). Jede Woche enthält `context_type` (ferien/schule/praktikum/sonstiges) und eine eigene Bezeichnung. Sieben Reflexionsdimensionen bleiben konstant; je Dimension liegen so viele Beobachtungen wie Wochen vor.
+
+`response_screen_weeks(response_id, week_number, minutes)` speichert Wochenmittel normalisiert und wird über den Antwort-Fremdschlüssel automatisch mitgelöscht. Bestehende sechs Bildschirmzeitspalten bleiben als Kompatibilitätsquelle lesbar. Bei vorhandenen neuen Zeilen haben deren Werte inklusive null Vorrang. Neue Abgaben schreiben die erste bis sechste Woche zusätzlich in die alten Spalten. Wochenarten steuern den Kontextvergleich unabhängig von eigenen Labels.
+
+Migration 002 erweitert die Wochenzahl ohne Löschen bestehender Daten. Erst die zuletzt angelegte Tabelle aktiviert variable Wochen; vorher bleiben die bisherigen Sechs-Wochen-Klassen funktionsfähig. Klassenplan und Beobachtungsdauer werden beim Erstellen festgelegt. Speicherfristen bleiben unabhängig davon bei 270 Minuten bzw. maximal 28 Tagen.

@@ -92,18 +92,36 @@ function responseAccess(bool $lock=false): array {
     if (!$r) fail(410,'Deine Teilnahme ist nicht mehr verfügbar.');
     return [$c,$r];
 }
+function flexibleWeeks(): bool {
+    static $ready;
+    if ($ready === null) $ready = (bool)query("SELECT 1 FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='response_screen_weeks'")->fetchColumn();
+    return $ready;
+}
+function classWeeks(int $id): array {
+    $type = flexibleWeeks() ? 'context_type' : "CASE WHEN label LIKE 'Ferien%' THEN 'ferien' WHEN label LIKE 'Schule%' THEN 'schule' WHEN label LIKE 'Praktikum%' THEN 'praktikum' ELSE 'sonstiges' END AS context_type";
+    return query('SELECT week_number,label,start_date,end_date,'.$type.' FROM class_weeks WHERE class_id=? ORDER BY week_number',[$id])->fetchAll();
+}
+function initialScreen(array $r,int $count): array {
+    $values=array_fill(0,$count,null);
+    for($i=0;$i<min(6,$count);$i++) $values[$i]=($r['screen_week_'.($i+1)]??null)===null?null:(float)$r['screen_week_'.($i+1)];
+    return $values;
+}
 function meta(array $c): array {
     return ['code'=>$c['class_code'],'label'=>$c['class_label'],'age_group'=>$c['jim_age_group'],
         'expected'=>$c['expected_participants'],'created_at'=>iso($c['created_at']),
         'expires_at'=>iso($c['expires_at']),'max_expires_at'=>iso($c['max_expires_at']),
         'public'=>(bool)$c['results_public'],'extension_count'=>(int)$c['extension_count'],
         'n'=>(int)query("SELECT COUNT(*) FROM responses WHERE class_id=? AND status='submitted'",[$c['id']])->fetchColumn(),
-        'weeks'=>query('SELECT week_number,label,start_date,end_date FROM class_weeks WHERE class_id=? ORDER BY week_number',[$c['id']])->fetchAll()];
+        'weeks'=>classWeeks((int)$c['id'])];
 }
 function own(array $r): array {
     $o=['status'=>$r['status'],'items'=>[],'screen'=>[],'apps'=>[],'reflection'=>$r['reflection']];
     for($i=1;$i<=7;$i++) $o['items'][]=$r[sprintf('jim_%02d',$i)]===null?null:(int)$r[sprintf('jim_%02d',$i)];
-    for($i=1;$i<=6;$i++) $o['screen'][]=$r['screen_week_'.$i]===null?null:(float)$r['screen_week_'.$i];
+    $o['screen']=initialScreen($r,count(classWeeks((int)$r['class_id'])));
+    if(flexibleWeeks()) foreach(query('SELECT week_number,minutes FROM response_screen_weeks WHERE response_id=?',[$r['id']])->fetchAll() as $w) {
+        $i=(int)$w['week_number']-1;
+        if(array_key_exists($i,$o['screen'])) $o['screen'][$i]=$w['minutes']===null?null:(float)$w['minutes'];
+    }
     for($i=1;$i<=3;$i++) if($r['app_'.$i.'_original']!==null) $o['apps'][]=$r['app_'.$i.'_original'];
     return $o;
 }

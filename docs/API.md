@@ -12,8 +12,8 @@ Admin- und Response-Tokens sind unterschiedliche Capabilities. Ein Klassencode o
 
 | Route | Methode | Zugang | Payload / Antwort |
 |---|---|---|---|
-| bootstrap | GET | Sitzung | CSRF, Itemtexte, bekannte App-Namen, öffentliche Betreiberangaben |
-| classes | POST | CSRF | `{label, age_group, expected, weeks:[{label,start_date,end_date} ×6]}` → `{class,admin_token}` |
+| bootstrap | GET | Sitzung | CSRF, Itemtexte, bekannte App-Namen, öffentliche Betreiberangaben, flexible_weeks, max_weeks |
+| classes | POST | CSRF | `{label, age_group, expected, weeks:[{label,context_type,start_date,end_date}] (1–52 Wochen)}` → `{class,admin_token}` |
 | class | GET | code | `{class}`: Metadaten, Wochen, Ablauf, Abgabezahl; keine Antworten |
 | start | POST | code + CSRF | `{}` → `{token,class}` |
 | response | GET | Response | `{class,response}` für genau die eigene Teilnahme |
@@ -38,7 +38,7 @@ Admin- und Response-Tokens sind unterschiedliche Capabilities. Ein Klassencode o
 }
 ```
 
-`items`: exakt sieben Werte 1–4; im Entwurf auch null. `screen`: exakt sechs Zahlen 0–1440 oder null. Null = unbekannt, 0 = tatsächliche Nullnutzung. `apps`: maximal drei Strings à 60 Zeichen; bekanntes Alias wird normalisiert, Dubletten pro Person entfernt. `reflection`: maximal 2000 Zeichen, privat. Andere Payloadfelder werden zurückgewiesen; Tagesdaten sind kein API-Format.
+`items`: exakt sieben Werte 1–4; im Entwurf auch null. `screen`: exakt so viele Zahlen 0–1440 oder null wie konfigurierte Klassenwochen. Null = unbekannt, 0 = tatsächliche Nullnutzung. `apps`: maximal drei Strings à 60 Zeichen; bekanntes Alias wird normalisiert, Dubletten pro Person entfernt. `reflection`: maximal 2000 Zeichen, privat. Andere Payloadfelder werden zurückgewiesen; Tagesdaten sind kein API-Format.
 
 POST submit ist nach bereits erfolgter Abgabe idempotent: Erfolgsmeldung, aber keine Änderung und keine zweite Zählung. POST draft nach Abgabe antwortet 409. GET results vor Abgabe antwortet 403.
 
@@ -51,3 +51,9 @@ JIM liefert Metadaten der festgeschriebenen Version und nur geprüfte Werte für
 ## Transaktionen
 
 Mutationen sperren zuerst Klasse und danach Antwort/Schlüssel. Gleichzeitiges Abschicken derselben Antwort zählt nur einmal; Verlängern kann die Grenze nicht überschreiten; Löschung kaskadiert. Ergebnisanfragen laufen in einem konsistenten Datenbanksnapshot. Nach Ablauf wird kein Klassen-/Antwortzugriff autorisiert.
+
+## Variable Beobachtungsdauer
+
+Standard im Formular: sechs Wochen. Die Wochenzahl wird aus `class.weeks.length` abgeleitet. `context_type` ist `ferien`, `schule`, `praktikum` oder `sonstiges`; `label` bleibt eine eigene Bezeichnung. Kontextstatistiken gruppieren nach der Wochenart. Bestehende API-Clients ohne `context_type` werden anhand des Labels eingeordnet. Wochenplan und Dauer bleiben nach dem Erstellen unverändert.
+
+Neue Wochenwerte stehen normalisiert in `response_screen_weeks`; die sechs alten Spalten bleiben für bestehende Antworten lesbar und werden für die ersten sechs Wochen weitergeschrieben. Keine Tageswerte. Vor Migration 002 bleiben sechs Wochen nutzbar, `flexible_weeks=false`.

@@ -1,6 +1,6 @@
 # Medienblick – Mein Handy-Experiment
 
-Mobile-first PHP/MySQL-Anwendung zur anonymen Auswertung eines sechswöchigen analogen Unterrichtsprojekts.
+Mobile-first PHP/MySQL-Anwendung zur anonymen Auswertung eines analogen Unterrichtsprojekts mit 1–52 Beobachtungswochen (Standard: sechs).
 
 **BEOBACHTEN → ICH → WIR → JIM → REFLEKTIEREN → GESTALTEN**
 
@@ -58,3 +58,7 @@ handy-experiment/
 ```
 
 Keine Node-/Build-Pipeline im Produktivbetrieb. Node und Playwright werden nur für die Browser-Entwicklungstests gebraucht. QR-Code-Generator 1.4.4 (MIT) ist lokal gebündelt; keine externen Browser-Dienste, Fonts, CDNs oder Tracker.
+
+## Flexible Beobachtungsdauer
+
+Beim Erstellen: 1–52 Wochen, standardmäßig sechs. Pro Woche Ferien, Schule, Praktikum oder Sonstiges sowie optionale Bezeichnung und Daten. Fragebogen, Wochenmittel, Verlauf, Kontextvergleich und Druck folgen dem Klassenplan. Für vorhandene Datenbanken zuerst Migration `database/migrations/002-flexible-weeks.sql` importieren; vorhandene Daten bleiben erhalten.

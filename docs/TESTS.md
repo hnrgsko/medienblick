@@ -37,3 +37,15 @@ Die produktive App benötigt Python, Node, Playwright und Chromium nicht.
 Plesk-FPM/Authorization-Weiterleitung, HTTPS/Secure-Cookies, echter Smartphone-QR-Scan, Cron-Ausführung, DB-Berechtigungen, technische Logs, Backup-/Binlog-Regeln und die Betreiberangaben. Kein Lasttest für einen landesweiten öffentlichen Betrieb, kein unabhängiges Penetrationstest-Zertifikat und keine vollständige WCAG-Auditierung.
 
 Numerische JIM-Referenzen wurden nur mit ausdrücklich synthetischen, nach dem Test gelöschten Fixtures auf Importfunktion geprüft. Es werden keine erfundenen Studienwerte ausgeliefert.
+
+## Erweiterung: variable Wochen (2026-10-04)
+
+Mit PHP 8.3 und MariaDB 10.11 isoliert lokal geprüft:
+
+- 88 vorhandene API-Integrationsprüfungen weiterhin erfolgreich.
+- 85 zusätzliche Prüfungen (`tests/flexible-weeks.py`): Klassen mit 1, 4, 8 und 52 Wochen, Kategorien unabhängig von Labels, Entwürfe/Fortsetzen/Abgabe, Werte außerhalb der ersten sechs Wochen, Null gegenüber 0, n≥5 pro Woche, unveränderliches ICH, öffentliche Aggregate, Eingabevalidierung und Kaskadenlöschung.
+- `tests/migration-weeks.php`: alte Datenbank vor dem Update, SQL-Import, bestehende Werte nach dem Update, wiederholter Import, Erhalt expliziter Kategorien und Kaskadenlöschung. Modi `before`, `migrate`, `after` jeweils als frischer PHP-Prozess gegen eine Wegwerf-Datenbank mit altem Schema ausführen.
+- `node tests/flexible-weeks.cjs`: Standard sechs, variable Formularlänge, Kategorien, Fragebogentexte, Wochenwerte/Zusammenfassung, Diagramme für 1–52 Wochen und Lücken sowie gesperrte Dauerauswahl vor Migration.
+- PHP-Lint und JavaScript-Syntaxprüfung erfolgreich.
+
+Der produktive Import in MySQL/Plesk wird vom Betreiber durchgeführt; Produktionsdaten wurden für die Tests nicht verwendet.

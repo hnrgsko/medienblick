@@ -107,3 +107,9 @@ Für Fehlersuche niemals echte Schülerantworten anfordern. HTTP-Status, ungefä
 ## Betriebshinweis
 
 Die integrierten Limits arbeiten pro kurzlebiger Session und global, nicht über IPs. Für einen stark frequentierten öffentlichen Host müssen Kapazität und globale Grenzwerte überprüft werden. Sessionwechsel können individuelle Limits umgehen; vollständige Doppelteilnahmeverhinderung ist bewusst kein Produktziel.
+
+## Update: frei wählbare Beobachtungsdauer
+
+Bei vorhandenen Installationen in phpMyAdmin die bestehende Datenbank auswählen und ausschließlich `database/migrations/002-flexible-weeks.sql` importieren. **Nicht das komplette schema.sql erneut importieren.** Das Update erhält Klassen und Antworten und kann wiederholt werden. Danach die Seite neu laden: 1–52 Wochen, Standard sechs, mit vier Wochenarten stehen zur Verfügung. Die Beobachtungsdauer verändert die Speicherfrist (270 Minuten / maximal 28 Tage) nicht.
+
+Bis zum Import läuft die App mit sechs Wochen weiter; die Dauerauswahl bleibt gesperrt. Neue Installationen nutzen das aktualisierte schema.sql.

@@ -48,11 +48,12 @@ CREATE TABLE class_weeks (
  class_id BIGINT UNSIGNED NOT NULL,
  week_number TINYINT UNSIGNED NOT NULL,
  label VARCHAR(60) NOT NULL,
+ context_type ENUM('ferien','schule','praktikum','sonstiges') NOT NULL DEFAULT 'sonstiges',
  start_date DATE NULL,
  end_date DATE NULL,
  UNIQUE KEY class_week (class_id,week_number),
  FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
- CHECK (week_number BETWEEN 1 AND 6),
+ CONSTRAINT class_weeks_number_range CHECK (week_number BETWEEN 1 AND 52),
  CHECK (end_date IS NULL OR start_date IS NULL OR end_date >= start_date)
 ) ENGINE=InnoDB;
 CREATE TABLE responses (
@@ -84,6 +85,15 @@ CREATE TABLE responses (
  submitted_at DATETIME NULL,
  INDEX class_status (class_id,status),
  FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS response_screen_weeks (
+ response_id BIGINT UNSIGNED NOT NULL,
+ week_number TINYINT UNSIGNED NOT NULL,
+ minutes DECIMAL(7,2) NULL,
+ PRIMARY KEY (response_id,week_number),
+ FOREIGN KEY (response_id) REFERENCES responses(id) ON DELETE CASCADE,
+ CHECK (week_number BETWEEN 1 AND 52),
+ CHECK (minutes IS NULL OR minutes BETWEEN 0 AND 1440)
 ) ENGINE=InnoDB;
 CREATE TABLE teacher_keys (
  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

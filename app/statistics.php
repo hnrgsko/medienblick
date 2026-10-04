@@ -7,8 +7,9 @@ function summary(array $v,int $minimum=5): ?array {
     return ['n'=>$n,'mean'=>round(array_sum($v)/$n,2),'median'=>round(($v[(int)floor(($n-1)/2)]+$v[(int)floor($n/2)])/2,2)];
 }
 function aggregate(array $c): array {
-    // Explicit projection excludes response identifiers, tokens, timestamps and reflections.
-    $cols=[];
+    // IDs are used internally to join weekly values; no individual rows or IDs leave aggregation.
+    $weeks=classWeeks((int)$c['id']); $weekCount=count($weeks);
+    $cols=['id'];
     for($i=1;$i<=7;$i++) $cols[]=sprintf('jim_%02d',$i);
     for($i=1;$i<=6;$i++) $cols[]='screen_week_'.$i;
     for($i=1;$i<=3;$i++) $cols[]='app_'.$i.'_normalized';
@@ -21,18 +22,24 @@ function aggregate(array $c): array {
         foreach($rows as $r) $counts[(int)$r[sprintf('jim_%02d',$i)]]++;
         $items[]=['counts'=>$counts,'percent'=>array_map(fn($v)=>round($v/$n*100,2),$counts),'agreement'=>round(($counts[3]+$counts[4])/$n*100,1)];
     }
-    $weekly=[]; for($i=1;$i<=6;$i++) $weekly[]=summary(array_map(fn($r)=>$r['screen_week_'.$i]===null?null:(float)$r['screen_week_'.$i],$rows));
+    $screens=[];foreach($rows as $r)$screens[$r['id']]=initialScreen($r,$weekCount);
+    if(flexibleWeeks()) foreach(query("SELECT w.response_id,w.week_number,w.minutes FROM response_screen_weeks w JOIN responses r ON r.id=w.response_id WHERE r.class_id=? AND r.status='submitted'",[$c['id']])->fetchAll() as $w) {
+        $i=(int)$w['week_number']-1;
+        if($i>=0&&$i<$weekCount)$screens[$w['response_id']][$i]=$w['minutes']===null?null:(float)$w['minutes'];
+    }
+    $weekly=[]; for($i=0;$i<$weekCount;$i++) $weekly[]=summary(array_column($screens,$i));
     $means=[];
     foreach($rows as $r) {
-        $v=[];for($i=1;$i<=6;$i++)if($r['screen_week_'.$i]!==null)$v[]=(float)$r['screen_week_'.$i];
+        $v=array_values(array_filter($screens[$r['id']],fn($x)=>$x!==null));
         if(count($v)) $means[]=array_sum($v)/count($v);
     }
     $contexts=[];
-    foreach(query('SELECT week_number,label FROM class_weeks WHERE class_id=? ORDER BY week_number',[$c['id']])->fetchAll() as $w) $contexts[$w['label']][]=(int)$w['week_number'];
+    $names=['ferien'=>'Ferien','schule'=>'Schule','praktikum'=>'Praktikum','sonstiges'=>'Sonstiges'];
+    foreach($weeks as $w) $contexts[$names[$w['context_type']]][]=(int)$w['week_number'];
     $contextStats=[];
     foreach($contexts as $label=>$weeks) {
         $v=[]; foreach($rows as $r) {
-            $p=[];foreach($weeks as $w)if($r['screen_week_'.$w]!==null)$p[]=(float)$r['screen_week_'.$w];
+            $p=[];foreach($weeks as $w)if($screens[$r['id']][$w-1]!==null)$p[]=$screens[$r['id']][$w-1];
             if(count($p))$v[]=array_sum($p)/count($p);
         }
         $contextStats[]=['label'=>$label,'weeks'=>$weeks,'stats'=>summary($v)];

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/statistics.php';
-function normalizedAnswers(array $d,bool $final): array {
+function normalizedAnswers(array $d,bool $final,int $weekCount=6): array {
     $allowed=['items','screen','apps','reflection'];
     if(array_diff(array_keys($d),$allowed)) fail(422,'Nicht unterstützte Daten. Tageswerte dürfen nicht übertragen werden.');
-    $items=$d['items']??array_fill(0,7,null); $screen=$d['screen']??array_fill(0,6,null); $apps=$d['apps']??[];
+    $items=$d['items']??array_fill(0,7,null); $screen=$d['screen']??array_fill(0,$weekCount,null); $apps=$d['apps']??[];
     if(!is_array($items)||!array_is_list($items)||count($items)!==7)fail(422,'Sieben Abschlussantworten erwartet.');
-    if(!is_array($screen)||!array_is_list($screen)||count($screen)!==6)fail(422,'Sechs Wochenmittel erwartet.');
+    if(!is_array($screen)||!array_is_list($screen)||count($screen)!==$weekCount)fail(422,'Bitte für jede konfigurierte Woche einen Wochenmittelwert oder null übertragen.');
     if(!is_array($apps)||!array_is_list($apps)||count($apps)>3)fail(422,'Bitte höchstens drei Apps nennen.');
     $v=[];
     foreach($items as $i=>$x) {
@@ -15,7 +15,7 @@ function normalizedAnswers(array $d,bool $final): array {
     }
     foreach($screen as $i=>$x) {
         if($x!==null && ((!is_int($x)&&!is_float($x))||!is_finite((float)$x)||$x<0||$x>1440))fail(422,'Bildschirmzeit muss zwischen 0 und 1440 Minuten liegen.');
-        $v['screen_week_'.($i+1)]=$x===null?null:round($x,2);
+        if($i<6) $v['screen_week_'.($i+1)]=$x===null?null:round($x,2);
     }
     $seen=[];$clean=[];
     foreach($apps as $a) {
@@ -31,7 +31,7 @@ function normalizedAnswers(array $d,bool $final): array {
 function dispatch(string $route,array $d): array {
     switch($route) {
     case 'bootstrap':
-        return ['csrf'=>$_SESSION['csrf'],'items'=>require __DIR__.'/items.php','base_url'=>config()['base_url'],
+        return ['csrf'=>$_SESSION['csrf'],'flexible_weeks'=>flexibleWeeks(),'max_weeks'=>flexibleWeeks()?52:6,'items'=>require __DIR__.'/items.php','base_url'=>config()['base_url'],
             'contact_email'=>config()['contact_email'],'legal_notice'=>config()['legal_notice'],
             'apps'=>query('SELECT DISTINCT canonical_name FROM app_aliases ORDER BY canonical_name')->fetchAll(PDO::FETCH_COLUMN)];
     case 'classes':
@@ -39,18 +39,21 @@ function dispatch(string $route,array $d): array {
         $label=shortText($d['label']??'',40,'Klassenbezeichnung');
         $age=$d['age_group']??'';if(!in_array($age,['12-13','14-15','16-17','18-19'],true))fail(422,'Bitte eine Vergleichsaltersgruppe wählen.');
         $expected=$d['expected']??null;if($expected!==null&&(!is_int($expected)||$expected<1||$expected>500))fail(422,'Erwartete Teilnehmerzahl: 1 bis 500.');
-        $weeks=$d['weeks']??[];if(!is_array($weeks)||!array_is_list($weeks)||count($weeks)!==6)fail(422,'Bitte sechs Wochenkontexte anlegen.');
+        $weeks=$d['weeks']??[];if(!is_array($weeks)||!array_is_list($weeks)||count($weeks)<1||count($weeks)>52)fail(422,'Bitte 1 bis 52 Beobachtungswochen anlegen.');
+        if(!flexibleWeeks()&&count($weeks)!==6)fail(503,'Die flexible Beobachtungsdauer benötigt zuerst das Datenbankupdate.');
         $clean=[];
         foreach($weeks as $w){
             if(!is_array($w))fail(422,'Wochenkontext ungültig.');
             $l=shortText($w['label']??'',60,'Wochenkontext');if(!$l)fail(422,'Jede Woche braucht einen Kontext.');
+            $type=$w['context_type']??(str_starts_with($l,'Ferien')?'ferien':(str_starts_with($l,'Schule')?'schule':(str_starts_with($l,'Praktikum')?'praktikum':'sonstiges')));
+            if(!in_array($type,['ferien','schule','praktikum','sonstiges'],true))fail(422,'Ungültige Wochenart.');
             $dates=[];foreach(['start_date','end_date'] as $k){
                 $v=$w[$k]??null;if($v==='')$v=null;
                 if($v!==null&&(!is_string($v)||!preg_match('/^\d{4}-\d{2}-\d{2}$/D',$v)||!($dt=DateTimeImmutable::createFromFormat('!Y-m-d',$v))||$dt->format('Y-m-d')!==$v))fail(422,'Ungültiges Datum.');
                 $dates[]=$v;
             }
             if($dates[0]&&$dates[1]&&$dates[1]<$dates[0])fail(422,'Das Ende liegt vor dem Beginn.');
-            $clean[]=[$l,...$dates];
+            $clean[]=[$l,...$dates,$type];
         }
         $alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         do{$code='';for($i=0;$i<6;$i++)$code.=$alphabet[random_int(0,strlen($alphabet)-1)];}while(query('SELECT id FROM classes WHERE class_code=?',[$code])->fetchColumn());
@@ -58,7 +61,10 @@ function dispatch(string $route,array $d): array {
         $dataset=(int)query('SELECT id FROM jim_datasets ORDER BY verified DESC,study_year DESC,id DESC LIMIT 1')->fetchColumn();
         query('INSERT INTO classes(class_code,admin_token_hash,class_label,jim_age_group,jim_dataset_id,expected_participants,created_at,expires_at,max_expires_at) VALUES (?,?,?,?,?,?,?,?,?)',[$code,digest($admin),$label,$age,$dataset,$expected,utc($now),utc($now+270*60),utc($now+28*86400)]);
         $id=(int)db()->lastInsertId();
-        foreach($clean as $i=>$w)query('INSERT INTO class_weeks(class_id,week_number,label,start_date,end_date) VALUES (?,?,?,?,?)',[$id,$i+1,...$w]);
+        foreach($clean as $i=>$w) {
+            if(flexibleWeeks()) query('INSERT INTO class_weeks(class_id,week_number,label,start_date,end_date,context_type) VALUES (?,?,?,?,?,?)',[$id,$i+1,...$w]);
+            else query('INSERT INTO class_weeks(class_id,week_number,label,start_date,end_date) VALUES (?,?,?,?,?)',[$id,$i+1,...array_slice($w,0,3)]);
+        }
         return ['class'=>meta(classBy('id',$id)),'admin_token'=>$admin];
     case 'class': return ['class'=>meta(classBy('class_code',validCode()))];
     case 'start':
@@ -75,9 +81,13 @@ function dispatch(string $route,array $d): array {
             if($route==='submit')return ['status'=>'submitted'];
             fail(409,'Die Abgabe ist endgültig und kann nicht verändert werden.');
         }
-        $v=normalizedAnswers($d,$route==='submit');
+        $weekCount=count(classWeeks((int)$c['id']));
+        $v=normalizedAnswers($d,$route==='submit',$weekCount);
         $set=implode(',',array_map(fn($k)=>$k.'=?',array_keys($v)));
         query("UPDATE responses SET $set WHERE id=? AND status='draft'",[...array_values($v),$r['id']]);
+        if(flexibleWeeks()) foreach(($d['screen']??array_fill(0,$weekCount,null)) as $i=>$minutes) {
+            query('INSERT INTO response_screen_weeks(response_id,week_number,minutes) VALUES (?,?,?) ON DUPLICATE KEY UPDATE minutes=VALUES(minutes)',[$r['id'],$i+1,$minutes===null?null:round($minutes,2)]);
+        }
         if($route==='submit') {
             for($i=1;$i<=3;$i++)if($a=$v['app_'.$i.'_normalized']){
                 $known=(bool)query('SELECT 1 FROM app_aliases WHERE canonical_name=? LIMIT 1',[$a])->fetchColumn();
