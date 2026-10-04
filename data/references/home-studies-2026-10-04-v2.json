@@ -1,0 +1,54 @@
+{
+  "version": "home-studies-2026-10-04-v2",
+  "quote": {
+    "text": "erleben Jugendliche Social Media als ständiges Wechselspiel zwischen positiven Erlebnissen und belastenden Erfahrungen.",
+    "attribution": "mpfs · Einführung zur JIMplus-Studie 2026",
+    "source": "https://mpfs.de/studie/jimplus-2026/"
+  },
+  "charts": [
+    {
+      "study": "JIMplus 2026",
+      "title": "Ablenkung hat zwei Seiten.",
+      "intro": "Wie Jugendliche Social Media im Alltag erleben:",
+      "kind": "bars",
+      "values": [
+        {
+          "label": "Ablenkung von Problemen oder Stress",
+          "value": 68
+        },
+        {
+          "label": "Ablenkung von Dingen, die eigentlich anstehen",
+          "value": 72
+        },
+        {
+          "label": "Weniger Zeit für Erholung und Freizeit",
+          "value": 55
+        }
+      ],
+      "basis": "14–17 Jahre · n = 800 · Deutschland · Onlinebefragung, Mai 2026",
+      "source": "https://mpfs.de/app/uploads/2026/07/JIMplus-2026_PDF.pdf#page=20",
+      "source_label": "Originaldiagramm · JIMplus 2026, S. 20",
+      "note": "Zustimmung voll und ganz / weitgehend. Aussagen sinngemäß zusammengefasst. Dieselbe Person kann mehreren Aussagen zustimmen."
+    },
+    {
+      "study": "JIMplus 2026",
+      "title": "Neue Perspektiven. Inszenierte Welten.",
+      "intro": "Social Media kann beides zugleich sein.",
+      "kind": "dots",
+      "values": [
+        {
+          "label": "Zugang zu sonst unbekannten Themen und Wissen",
+          "value": 82
+        },
+        {
+          "label": "Viele Inhalte wirken unecht oder inszeniert",
+          "value": 80
+        }
+      ],
+      "basis": "14–17 Jahre · n = 800 · Deutschland · Onlinebefragung, Mai 2026",
+      "source": "https://mpfs.de/app/uploads/2026/07/JIMplus-2026_PDF.pdf#page=22",
+      "source_label": "Originaldiagramm · JIMplus 2026, S. 22",
+      "note": "Zustimmung voll und ganz / weitgehend. Aussagen sinngemäß zusammengefasst; die Anteile ergänzen sich nicht zu 100 %."
+    }
+  ]
+}
