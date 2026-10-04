@@ -1,0 +1,54 @@
+{
+  "version": "home-studies-2026-10-04-v1",
+  "quote": {
+    "text": "erleben Jugendliche Social Media als ständiges Wechselspiel zwischen positiven Erlebnissen und belastenden Erfahrungen.",
+    "attribution": "mpfs · Einführung zur JIMplus-Studie 2026",
+    "source": "https://mpfs.de/studie/jimplus-2026/"
+  },
+  "charts": [
+    {
+      "study": "JIM 2025",
+      "title": "KI gehört zum Lernalltag.",
+      "intro": "Wofür Jugendliche KI-Anwendungen einsetzen:",
+      "kind": "bars",
+      "values": [
+        {
+          "label": "Hausaufgaben oder Lernen",
+          "value": 74
+        },
+        {
+          "label": "Informationen suchen",
+          "value": 70
+        },
+        {
+          "label": "Herausfinden, wie etwas geht",
+          "value": 54
+        }
+      ],
+      "basis": "12–19 Jahre · n = 1.088 mit KI-Erfahrung · Deutschland · Mehrfachnennungen",
+      "source": "https://mpfs.de/app/uploads/2025/11/JIM_2025_PDF_barrierearm.pdf#page=65",
+      "source_label": "Originaldiagramm · JIM 2025, S. 63",
+      "note": "Anteile unter Jugendlichen, die ChatGPT oder eine andere KI-Anwendung genutzt haben."
+    },
+    {
+      "study": "JIMplus 2026",
+      "title": "Neue Perspektiven. Inszenierte Welten.",
+      "intro": "Social Media kann beides zugleich sein.",
+      "kind": "dots",
+      "values": [
+        {
+          "label": "Zugang zu sonst unbekannten Themen und Wissen",
+          "value": 82
+        },
+        {
+          "label": "Viele Inhalte wirken unecht oder inszeniert",
+          "value": 80
+        }
+      ],
+      "basis": "14–17 Jahre · n = 800 · Deutschland · Onlinebefragung, Mai 2026",
+      "source": "https://mpfs.de/app/uploads/2026/07/JIMplus-2026_PDF.pdf#page=22",
+      "source_label": "Originaldiagramm · JIMplus 2026, S. 22",
+      "note": "Zustimmung voll und ganz / weitgehend. Aussagen sinngemäß zusammengefasst; die Anteile ergänzen sich nicht zu 100 %."
+    }
+  ]
+}
