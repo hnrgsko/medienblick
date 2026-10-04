@@ -6,7 +6,13 @@ final class ApiError extends RuntimeException {
 function config(): array {
     static $c;
     if ($c === null) {
-        $path = getenv('HANDY_CONFIG') ?: dirname(__DIR__).'/config/config.php';
+        // Plesk layout: domain/private/config.php beside domain/httpdocs/.
+        // An explicit override remains authoritative for both PHP-FPM and cron.
+        $path = getenv('HANDY_CONFIG');
+        if (!$path) {
+            $privatePath = dirname(__DIR__, 2).'/private/config.php';
+            $path = is_file($privatePath) ? $privatePath : dirname(__DIR__).'/config/config.php';
+        }
         if (!is_file($path)) throw new ApiError(503,'Die Anwendung ist noch nicht eingerichtet. Bitte die Lehrkraft informieren.');
         $c = require $path;
     }

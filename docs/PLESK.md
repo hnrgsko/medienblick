@@ -19,9 +19,11 @@ Die Anwendung kann auch in einem URL-Unterverzeichnis betrieben werden. `base_ur
 
 Eine neue utf8mb4-Datenbank und einen eigenen Benutzer anlegen. Für die einmalige Schemaanlage DDL-Rechte nutzen; im laufenden Webbetrieb genügen SELECT, INSERT, UPDATE und DELETE auf dieser Datenbank. Referenzimport und Schlüsselverwaltung benötigen ebenfalls diese DML-Rechte. Optional zusätzliche Einschränkungen nach Tabelle vornehmen.
 
-`config/config.example.php` als `config/config.php` kopieren und DSN, Benutzer, Passwort, `base_url`, Kontaktadresse und Betreiberangaben eintragen. Die Datei nur für den Hostingbenutzer lesbar halten, z. B. `chmod 600`. Keine Zugangsdaten ins Repository aufnehmen.
+Empfohlenes Plesk-Layout: Git stellt das Repository in `medienblick.harzenetter.eu/httpdocs` bereit; der Dokumentenstamm zeigt auf `medienblick.harzenetter.eu/httpdocs/public`. Daneben liegt die Konfiguration unter `medienblick.harzenetter.eu/private/config.php`, außerhalb des Git-Bereitstellungsordners und des öffentlichen Webroots.
 
-Alternativ weist `HANDY_CONFIG` auf eine PHP-Konfigurationsdatei außerhalb des Projektordners. Web-FPM und Cron müssen denselben Pfad verwenden.
+`config/config.example.php` als Vorlage für diese private `config.php` verwenden und DSN, Benutzer, Passwort, `base_url`, Kontaktadresse und Betreiberangaben eintragen. Die Datei nur für den Hostingbenutzer lesbar halten, z. B. `chmod 600`. Keine Zugangsdaten ins Repository aufnehmen.
+
+Die App und die CLI-Skripte finden `../private/config.php` relativ zum Repository-Hauptordner automatisch. Dafür ist keine Umgebungsvariable nötig. Falls diese Datei fehlt, wird weiterhin `config/config.php` innerhalb des Repository-Hauptordners unterstützt. Eine gesetzte Umgebungsvariable `HANDY_CONFIG` hat Vorrang vor beiden Pfaden; bei einer ungültigen expliziten Pfadangabe erfolgt kein Fallback. Für ein anderes Layout kann sie auf den absoluten Pfad der gewünschten Konfigurationsdatei zeigen. Web-FPM und Cron müssen dann denselben Pfad verwenden.
 
 Für Produktivbetrieb:
 
